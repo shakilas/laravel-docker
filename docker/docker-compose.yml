@@ -6,7 +6,7 @@ nginx:
   ports:
     - "80:80"
   environment:
-    - VIRTUAL_HOST:=api.laravel.thilangapitigala.dev
+    - VIRTUAL_HOST=api.laravel.thilangapitigala.dev
 php:
   build: images/php
   volumes:
@@ -16,7 +16,7 @@ php:
   links:
     - db
   ports:
-    - "9000:9000"
+    - "9001:9000"
   links:
     - db
   environment:
@@ -25,6 +25,7 @@ php:
     - DB_USERNAME=root
     - DB_PASSWORD=password
     - DB_CONNECTION=mysql
+    - PHP_XDEBUG_ENABLED=1 # Set 1 to enable.
 db:
   image: mysql
   ports:
