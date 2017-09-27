@@ -15,6 +15,7 @@ now, create the app in the directory named `app`
 cd app
 rm .gitkeep
 docker run --user $(id -u) --rm -v $(pwd):/app composer/composer create-project --prefer-dist laravel/laravel .
+cp .env.example .env
 ```
 
 ### Configuration
