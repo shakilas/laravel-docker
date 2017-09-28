@@ -16,7 +16,7 @@ php:
   links:
     - db
   ports:
-    - "9001:9000"
+    - "9000:9000"
   links:
     - db
   environment:
