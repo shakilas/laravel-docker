@@ -1,17 +1,13 @@
-FROM php:fpm
-RUN apt-get update && apt-get install -y libmcrypt-dev
+FROM php:7-fpm-alpine
 
-# lumen packages
-RUN apt-get install -y php5-memcached \
-    && docker-php-ext-install mcrypt mbstring tokenizer mysqli pdo_mysql \
-    && apt-get install -y libz-dev libmemcached-dev \
-    && pecl install memcached \
-    && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
+RUN apk --update upgrade --no-cache add php7-xdebug; \
+    php -r "copy('http://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --install-dir=/usr/bin --filename=composer && \
+    php -r "unlink('composer-setup.php');"
 
 # XDEBUG
 ENV XDEBUGINI_PATH=/usr/local/etc/php/conf.d/xdebug.ini
 
-RUN yes | pecl install xdebug
 RUN echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >> $XDEBUGINI_PATH
 RUN echo "xdebug.remote_host="`/sbin/ip route|awk '/default/ { print $3 }'` >> $XDEBUGINI_PATH
 RUN echo "xdebug.remote_enable=on" >> $XDEBUGINI_PATH
